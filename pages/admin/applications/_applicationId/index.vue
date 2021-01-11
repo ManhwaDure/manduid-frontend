@@ -41,6 +41,42 @@
           </tr>
         </tbody>
 
+        <thead>
+          <tr class="has-text-centered">
+            <th colspan="2">추가질문</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-if="application.additionalAnswers.length === 0"
+            class="has-text-centered"
+          >
+            <td colspan="2">없음</td>
+          </tr>
+          <template v-for="answer in application.additionalAnswers" v-else>
+            <tr :key="answer.question.id">
+              <td colspan="2">
+                <strong
+                  >{{ answer.question.question
+                  }}<sup v-if="answer.question.required" style="color: red"
+                    >*필수</sup
+                  ></strong
+                >
+              </td>
+            </tr>
+            <tr :key="answer.question.id + '_ans'">
+              <td
+                v-if="answer.answer === ''"
+                colspan="2"
+                style="color: darkgray"
+              >
+                답변 없음
+              </td>
+              <td v-else colspan="2">{{ answer.answer }}</td>
+            </tr>
+          </template>
+        </tbody>
+
         <template v-if="application.acceptance">
           <thead>
             <tr class="has-text-centered">
@@ -126,7 +162,7 @@ export default Vue.extend({
   components: { LoadingModal, FadeTransition },
   data(): VueDataType {
     return {
-      application: { acceptance: {} },
+      application: { acceptance: {}, additionalAnswers: [] },
       reason: '',
       processed: false,
     }
@@ -186,6 +222,14 @@ export default Vue.extend({
               accepterId
               accepterName
               reason
+            }
+            additionalAnswers {
+              answer
+              question {
+                id
+                question
+                required
+              }
             }
           }
         }

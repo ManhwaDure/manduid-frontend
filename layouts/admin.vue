@@ -167,7 +167,13 @@ export default Vue.extend({
         },
         {
           name: '입부원서관리',
-          items: [{ name: '입부/재입부원서', href: '/admin/applications' }],
+          items: [
+            { name: '입부/재입부원서', href: '/admin/applications' },
+            {
+              name: '입부/재입부원서 추가질문 관리',
+              href: '/admin/applications/questions',
+            },
+          ],
         },
         {
           name: '집행부원 관리',

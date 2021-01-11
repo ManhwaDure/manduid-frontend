@@ -5,7 +5,38 @@
       성공적으로 접수됐습니다. 만약 2~3일 이후에도 연락이 오지 않는다면
       회장단에게 문자나 전화로 연락해주세요.<br />
     </p>
-    <form v-else @submit.prevent="doApply">
+    <form v-else-if="isAdditionalQuestionsStep" @submit.prevent="doApply">
+      <div
+        v-for="question in additionalQuestions"
+        :key="question.id"
+        class="field"
+      >
+        <label :for="question.id" class="label">
+          {{ question.question }}
+          <sup v-if="question.required" style="color: red">*필수</sup>
+        </label>
+        <div class="field">
+          <textarea
+            :id="question.id"
+            v-model="question.answer"
+            class="textarea"
+          ></textarea>
+        </div>
+      </div>
+      <p class="answer-all-required">필수 질문은 반드시 모두 응답해주세요!</p>
+      <div class="field is-grouped is-grouped-right">
+        <div class="control">
+          <button
+            class="button"
+            @click.prevent="isAdditionalQuestionsStep = false"
+          >
+            이전
+          </button>
+          <button class="button is-primary" type="submit">신청</button>
+        </div>
+      </div>
+    </form>
+    <form v-else @submit.prevent="doApplyOrContinue">
       <p>
         중앙대학교 서울캠퍼스 중앙동아리 만화두레에 오신 것을 환영합니다!<br />
         온라인 입부신청 중 오류 발생시 회장단에게 연락해주시기 바랍니다.
@@ -85,13 +116,16 @@
           <div class="level-item">
             <div class="field">
               <div class="control">
-                <button class="button is-primary" type="submit">신청</button>
+                <button class="button is-primary" type="submit">
+                  {{ additionalQuestions.length === 0 ? '신청' : '다음' }}
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </form>
+    <loading-modal :active="this.$apollo.loading" />
   </div>
 </template>
 
@@ -99,13 +133,10 @@
 .avatar-help {
   text-align: center;
 }
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
+.answer-all-required {
+  font-size: 0.8em;
+  text-align: right;
+  color: red;
 }
 </style>
 
@@ -113,9 +144,10 @@
 import gql from 'graphql-tag'
 import Vue from 'vue'
 import TelInput from '~/components/telInput.vue'
+import LoadingModal from '~/components/loadingModal.vue'
 
 export default Vue.extend({
-  components: { TelInput },
+  components: { TelInput, LoadingModal },
   layout: 'default-wide',
   data() {
     return {
@@ -130,17 +162,50 @@ export default Vue.extend({
         reApplication: false,
         applicationDate: '',
       },
+      isAdditionalQuestionsStep: false,
+      additionalQuestions: [],
     }
   },
   created() {
     this.$store.commit('SET_RIGHT_CARD_LAYOUT_TITLE', '입부신청')
   },
+  apollo: {
+    additionalQuestions: {
+      query: gql`
+        query {
+          applicationFormAdditionalQuestions {
+            id
+            question
+            required
+          }
+        }
+      `,
+      update: (data) =>
+        data.applicationFormAdditionalQuestions.map(
+          (i: { id: string; question: string; required: boolean }) => {
+            return {
+              id: i.id,
+              question: i.question,
+              required: i.required,
+              answer: '',
+            }
+          }
+        ),
+    },
+  },
   methods: {
+    async doApplyOrContinue() {
+      if (this.additionalQuestions.length === 0) await this.doApply()
+      else this.isAdditionalQuestionsStep = true
+    },
     async doApply() {
       const result = await this.$apollo.mutate({
         mutation: gql`
-          mutation($form: ApplicationFormInput!) {
-            apply(form: $form) {
+          mutation(
+            $form: ApplicationFormInput!
+            $additionalAnswers: [ApplicationFormAdditionalAnswerInput!]!
+          ) {
+            apply(form: $form, additionalAnswers: $additionalAnswers) {
               reApplication
             }
           }
@@ -153,6 +218,12 @@ export default Vue.extend({
             birthday: this.birthday,
             studentId: this.studentId,
           },
+          additionalAnswers: this.additionalQuestions.map((i: any) => {
+            return {
+              questionId: i.id,
+              answer: i.answer,
+            }
+          }),
         },
       })
 
