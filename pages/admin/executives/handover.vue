@@ -116,8 +116,16 @@ export default Vue.extend({
 
       await this.$apollo.mutate({
         mutation: gql`
-          mutation($memberId: Int!, $disappointAllExecutives: Boolean!, unsubscribeAll: Boolean!) {
-            handoverExecutive(memberId: $memberId, disappointAllEecutives: $disappointAllExecutives, unsubscribeAll: $unsubscribeAll)
+          mutation(
+            $memberId: Int!
+            $disappointAllExecutives: Boolean!
+            $unsubscribeAll: Boolean!
+          ) {
+            handoverPresident(
+              memberId: $memberId
+              disappointAllExecutives: $disappointAllExecutives
+              unsubscribeAll: $unsubscribeAll
+            )
           }
         `,
         variables: {
