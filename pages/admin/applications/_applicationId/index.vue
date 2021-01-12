@@ -237,7 +237,7 @@ export default Vue.extend({
         }
       `,
 
-      variables() {
+      variables(): { id: string } {
         return {
           id: this.$route.params.applicationId,
         }

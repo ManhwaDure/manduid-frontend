@@ -202,7 +202,7 @@ export default Vue.extend({
           }
         }
       `,
-      variables() {
+      variables(): { id: number } {
         return {
           id: parseInt(this.$route.params.memberId),
         }
