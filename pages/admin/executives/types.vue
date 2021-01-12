@@ -151,8 +151,10 @@ import gql from 'graphql-tag'
 import Vue from 'vue'
 import LoadingModal from '~/components/loadingModal.vue'
 import FadeTransition from '~/components/fadeTransition.vue'
+import hasPermission from '~/middleware/hasPermission'
 export default Vue.extend({
   layout: 'admin',
+  middleware: hasPermission('executive.type'),
   components: {
     LoadingModal,
     FadeTransition,

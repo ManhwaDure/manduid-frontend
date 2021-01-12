@@ -111,6 +111,7 @@ import {
   MemberType,
 } from '~/components/EnumDescriptions'
 import MemberTable from '~/components/memberTable.vue'
+import hasPermission from '~/middleware/hasPermission'
 
 type MemberDataType = {
   id: number
@@ -138,7 +139,7 @@ type VueDataType = {
 
 export default Vue.extend({
   components: { LoadingModal, MemberTable },
-  middleware: 'isAuthenticated',
+  middleware: hasPermission('roll.list'),
   layout: 'admin',
   data(): VueDataType {
     return {

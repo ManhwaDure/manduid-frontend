@@ -176,9 +176,11 @@ import {
 } from '~/components/EnumDescriptions'
 import LoadingModal from '~/components/loadingModal.vue'
 import Pagination from '~/components/pagination.vue'
+import hasPermission from '~/middleware/hasPermission'
 export default Vue.extend({
   layout: 'admin',
   components: { LoadingModal, Pagination },
+  middleware: hasPermission('roll.list'),
   data() {
     return {
       SchoolRegisterationStatusDescription,

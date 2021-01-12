@@ -95,6 +95,7 @@ import LoadingModal from '~/components/loadingModal.vue'
 export default Vue.extend({
   layout: 'admin',
   components: { LoadingModal },
+  middleware: ['subscription'],
   data() {
     return {
       descriptions: {

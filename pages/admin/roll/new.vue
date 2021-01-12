@@ -106,9 +106,11 @@ import {
   MemberTypeDescription,
 } from '~/components/EnumDescriptions'
 import FadeTransition from '~/components/fadeTransition.vue'
+import hasPermission from '~/middleware/hasPermission'
 export default Vue.extend({
   layout: 'admin',
   components: { TelInput, FadeTransition },
+  middleware: hasPermission('roll.create'),
   data() {
     return {
       SchoolRegisterationStatusDescription,

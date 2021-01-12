@@ -151,6 +151,7 @@ import gql from 'graphql-tag'
 import Vue from 'vue'
 import FadeTransition from '~/components/fadeTransition.vue'
 import LoadingModal from '~/components/loadingModal.vue'
+import hasPermission from '~/middleware/hasPermission'
 
 type VueDataType = {
   application: any
@@ -160,6 +161,7 @@ type VueDataType = {
 export default Vue.extend({
   layout: 'admin',
   components: { LoadingModal, FadeTransition },
+  middleware: hasPermission('application.read'),
   data(): VueDataType {
     return {
       application: { acceptance: {}, additionalAnswers: [] },

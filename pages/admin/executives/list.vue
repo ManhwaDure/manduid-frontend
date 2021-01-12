@@ -24,8 +24,10 @@
 import gql from 'graphql-tag'
 import Vue from 'vue'
 import MemberTable from '~/components/memberTable.vue'
+import hasPermission from '~/middleware/hasPermission'
 export default Vue.extend({
   layout: 'admin',
+  middleware: hasPermission('executive.list'),
   components: {
     MemberTable,
   },

@@ -61,6 +61,7 @@ import gql from 'graphql-tag'
 import Vue from 'vue'
 export default Vue.extend({
   layout: 'admin',
+  middleware: 'isPresident',
   data() {
     return {
       studentId: 0,

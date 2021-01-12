@@ -69,9 +69,11 @@
 import gql from 'graphql-tag'
 import Vue from 'vue'
 import LoadingModal from '~/components/loadingModal.vue'
+import hasPermission from '~/middleware/hasPermission'
 export default Vue.extend({
   layout: 'admin',
   components: { LoadingModal },
+  middleware: hasPermission('application.additionalQuestion'),
   data() {
     return {
       questions: [],

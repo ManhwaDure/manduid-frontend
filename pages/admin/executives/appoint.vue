@@ -59,9 +59,11 @@
 import gql from 'graphql-tag'
 import Vue from 'vue'
 import fadeTransition from '~/components/fadeTransition.vue'
+import hasPermission from '~/middleware/hasPermission'
 export default Vue.extend({
   components: { fadeTransition },
   layout: 'admin',
+  middleware: hasPermission('executive.appoint'),
   data() {
     return {
       studentId: 0,

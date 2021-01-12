@@ -146,6 +146,7 @@ import {
   MemberType,
 } from '~/components/EnumDescriptions'
 import LoadingModal from '~/components/loadingModal.vue'
+import hasPermission from '~/middleware/hasPermission'
 
 type VueDataType = {
   SchoolRegisterationStatusDescription: {
@@ -167,6 +168,7 @@ type VueDataType = {
 
 export default Vue.extend({
   layout: 'admin',
+  middleware: hasPermission('roll.update'),
   components: { TelInput, LoadingModal },
   data(): VueDataType {
     return {

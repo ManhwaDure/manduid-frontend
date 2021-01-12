@@ -52,7 +52,9 @@
 <script lang="ts">
 import gql from 'graphql-tag'
 import Vue from 'vue'
+import hasPermission from '~/middleware/hasPermission'
 export default Vue.extend({
+  middleware: hasPermission('application.read'),
   layout: 'admin',
   data() {
     return {
