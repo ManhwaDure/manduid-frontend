@@ -7,13 +7,13 @@ export default async function ({ app, error }: Context) {
   if (hasToken) {
     const result = await app.apolloProvider.defaultClient.query({
       query: gql`
-          query() {
-            me {
-                isExecutive
-                isPresident
-            }
+        query {
+          me {
+            isExecutive
+            isPresident
           }
-        `,
+        }
+      `,
     })
 
     if (!result.data.me.isExecutive && !result.data.me.isPresident) {

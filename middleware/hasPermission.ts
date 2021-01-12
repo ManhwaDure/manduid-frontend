@@ -10,7 +10,7 @@ export default function hasPermission(permission: string) {
         query: gql`
           query($permission: String!) {
             me {
-              hasPermission($permission)
+              hasPermission(permission: $permission)
             }
           }
         `,
