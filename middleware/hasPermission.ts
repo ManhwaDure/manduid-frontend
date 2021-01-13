@@ -2,7 +2,7 @@ import { Context } from '@nuxt/types'
 import gql from 'graphql-tag'
 
 export default function hasPermission(permission: string) {
-  return async function ({ app, error }: Context) {
+  return async function ({ app, error, redirect, route }: Context) {
     const hasToken = !!app.$apolloHelpers.getToken()
 
     if (hasToken) {
@@ -26,10 +26,7 @@ export default function hasPermission(permission: string) {
         })
       }
     } else {
-      error({
-        message: '로그인이 필요합니다.',
-        statusCode: 401,
-      })
+      redirect(302, '/login?redirect=' + encodeURIComponent(route.fullPath))
     }
   }
 }
