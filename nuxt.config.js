@@ -1,3 +1,19 @@
+const modules = ['@nuxtjs/bulma', '@nuxtjs/apollo']
+if (
+  process.env.NODE_ENV &&
+  process.env.NODE_ENV.trim().toLowerCase() !== 'production'
+)
+  modules.push([
+    '@nuxtjs/proxy',
+    {
+      pathRewrite: {
+        '^/api': '/',
+        '^/graphql': '/',
+        '^/.well-known/openid-configuration': '/openid-configuration',
+      },
+    },
+  ])
+
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
   ssr: false,
@@ -34,8 +50,13 @@ export default {
     middleware: 'validateAuthToken',
   },
 
-  // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: ['@nuxtjs/bulma', '@nuxtjs/apollo'],
+  modules,
+
+  proxy: {
+    '/graphql': 'http://127.0.0.1:4000',
+    '/.well-known': 'http://127.0.0.1:4001',
+    '/api': 'http://127.0.0.1:4001',
+  },
 
   fontawesome: {
     icons: {
