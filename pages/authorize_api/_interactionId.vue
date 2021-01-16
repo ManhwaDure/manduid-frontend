@@ -12,7 +12,7 @@ export default Vue.extend({
     const result = await this.$apollo.mutate({
       mutation: gql`
         mutation($interactionId: String!) {
-          processOAuth2Client(interactionId: $interactionId)
+          processOAuth2Authorization(interactionId: $interactionId)
         }
       `,
       variables: {
@@ -20,7 +20,7 @@ export default Vue.extend({
       },
     })
 
-    location.assign(result.data.processOAuth2Client)
+    location.assign(result.data.processOAuth2Authorization)
     this.$store.commit('SET_RIGHT_CARD_LAYOUT_TITLE', '비밀번호 재설정')
   },
 })
