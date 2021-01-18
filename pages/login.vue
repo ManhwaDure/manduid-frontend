@@ -124,16 +124,17 @@ export default Vue.extend({
         },
       })
 
-      this.loggingIn = false
       if (result.errors) {
         this.error =
           '내부 오류가 발생했습니다: ' +
           result.errors.map((i) => i.message).join('\n')
         this.id = ''
         this.password = ''
+        this.loggingIn = false
       } else if (!result.data.login.success) {
         this.error =
           '로그인 오류가 발생했습니다: ' + result.data.login.errorMessage
+        this.loggingIn = false
       } else {
         // 성공
         await this.$apolloHelpers.onLogin(result.data.login.token)
