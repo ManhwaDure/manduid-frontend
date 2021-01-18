@@ -21,7 +21,7 @@ export default Vue.extend({
     })
 
     location.assign(result.data.processOAuth2Authorization)
-    this.$store.commit('SET_RIGHT_CARD_LAYOUT_TITLE', '비밀번호 재설정')
+    this.$store.commit('SET_RIGHT_CARD_LAYOUT_TITLE', 'SSO 로그인')
   },
 })
 </script>
