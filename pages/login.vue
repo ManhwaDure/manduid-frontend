@@ -105,6 +105,7 @@ export default Vue.extend({
   },
   methods: {
     async doLogin(): Promise<void> {
+      if (this.loggingIn) return
       this.loggingIn = true
 
       const result = await this.$apollo.mutate({
