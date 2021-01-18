@@ -16,7 +16,8 @@ export default Vue.extend({
   created() {
     this.$store.commit('SET_RIGHT_CARD_LAYOUT_TITLE', '로그아웃')
     this.$apolloHelpers.onLogout().then(() => {
-      this.$router.push(this.redirect)
+      if (/^https?:\/\//.test(this.redirect)) location.assign(this.redirect)
+      else this.$router.push(this.redirect)
     })
   },
 })

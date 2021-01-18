@@ -138,7 +138,8 @@ export default Vue.extend({
       } else {
         // 성공
         await this.$apolloHelpers.onLogin(result.data.login.token)
-        this.$router.push(this.redirect)
+        if (/^https?:\/\//.test(this.redirect)) location.assign(this.redirect)
+        else this.$router.push(this.redirect)
       }
     },
   },
