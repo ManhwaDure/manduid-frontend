@@ -41,7 +41,17 @@
           <div class="level-item">
             <div class="field">
               <div class="control">
-                <button class="button is-primary" type="submit">로그인</button>
+                <button
+                  v-if="loggingIn"
+                  class="button is-primary"
+                  type="submit"
+                  disabled
+                >
+                  <font-awesome-icon icon="circle-notch" spin />로그인중
+                </button>
+                <button v-else class="button is-primary" type="submit">
+                  로그인
+                </button>
               </div>
             </div>
           </div>
@@ -72,7 +82,13 @@ export default Vue.extend({
       id: '',
       password: '',
       error: null,
-    } as { id: string; password: string; error: string | null }
+      loggingIn: false,
+    } as {
+      id: string
+      password: string
+      error: string | null
+      loggingIn: boolean
+    }
   },
   computed: {
     redirect(): string {
@@ -89,6 +105,8 @@ export default Vue.extend({
   },
   methods: {
     async doLogin(): Promise<void> {
+      this.loggingIn = true
+
       const result = await this.$apollo.mutate({
         mutation: gql`
           mutation($id: String!, $password: String!) {
@@ -105,6 +123,7 @@ export default Vue.extend({
         },
       })
 
+      this.loggingIn = false
       if (result.errors) {
         this.error =
           '내부 오류가 발생했습니다: ' +
