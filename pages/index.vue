@@ -16,10 +16,8 @@
       <li>
         <nuxt-link to="/change_password">비밀번호 변경</nuxt-link>
       </li>
-      <li>
-        <nuxt-link v-if="me.isExecutive || me.isPresident" to="/admin"
-          >관리</nuxt-link
-        >
+      <li v-if="me.isExecutive || me.isPresident">
+        <nuxt-link to="/admin">관리</nuxt-link>
       </li>
     </ul>
   </div>
