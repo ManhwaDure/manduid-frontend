@@ -71,6 +71,35 @@
         </div>
         <p class="help">공백 문자로 구분합니다.</p>
       </div>
+      <div class="field">
+        <label for="postLogoutRedirectUris" class="label"
+          >Post logout redirect uris</label
+        >
+        <div class="control">
+          <textarea
+            id="postLogoutRedirectUris"
+            v-model="postLogoutRedirectUrisInput"
+            class="textarea"
+          />
+        </div>
+        <p class="help">
+          RP-Initated Logout과 관련된 설정입니다. 개행문자로 구분합니다.
+        </p>
+      </div>
+      <div class="field">
+        <label for="backchannelLogoutUri" class="label"
+          >Backchannel Logout uri</label
+        >
+        <div class="control">
+          <input
+            id="backchannelLogoutUri"
+            v-model="client.backchannelLogoutUri"
+            placeholder="공란으로 남길 시 Backchannel Logout 미지원 Client로 간주됨"
+            type="text"
+            class="input"
+          />
+        </div>
+      </div>
       <div class="field is-grouped">
         <div class="control">
           <button class="button is-primary" type="submit">수정</button>
@@ -100,6 +129,8 @@ export default Vue.extend({
         name: '',
         allowedScopes: [] as string[],
         redirectUris: [] as string[],
+        postLogoutRedirectUris: [] as string[],
+        backchannelLogoutUri: '',
       },
       success: false,
     }
@@ -114,6 +145,8 @@ export default Vue.extend({
             name
             allowedScopes
             redirectUris
+            postLogoutRedirectUris
+            backchannelLogoutUri
           }
         }
       `,
@@ -143,6 +176,14 @@ export default Vue.extend({
         this.client.redirectUris = value.split('\n')
       },
     },
+    postLogoutRedirectUrisInput: {
+      get(): string {
+        return this.client.postLogoutRedirectUris.join('\n')
+      },
+      set(value: string) {
+        this.client.postLogoutRedirectUris = value.split('\n')
+      },
+    },
   },
   methods: {
     async updateClient() {
@@ -156,12 +197,16 @@ export default Vue.extend({
             $name: String!
             $redirectUris: [String!]!
             $allowedScopes: [String!]!
+            $postLogoutRedirectUris: [String!]
+            $backchannelLogoutUri: String
           ) {
             updateOAuth2Client(
               id: $id
               name: $name
               redirectUris: $redirectUris
               allowedScopes: $allowedScopes
+              postLogoutRedirectUris: $postLogoutRedirectUris
+              backchannelLogoutUri: $backchannelLogoutUri
             ) {
               id
             }
@@ -172,6 +217,8 @@ export default Vue.extend({
           name: this.client.name,
           redirectUris: this.client.redirectUris,
           allowedScopes: this.client.allowedScopes,
+          postLogoutRedirectUris: this.client.postLogoutRedirectUris,
+          backchannelLogoutUri: this.client.backchannelLogoutUri,
         },
       })
 
