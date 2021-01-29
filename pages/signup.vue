@@ -57,9 +57,10 @@
         <label for="phoneNumber" class="label">전화번호</label>
         <div class="control">
           <tel-input
+            id="phoneNumber"
             v-model="phoneNumber"
             class="input"
-            aria-placeholder="예시: 010-0000-0000"
+            placeholder="예시: 010-0000-0000"
             required
           />
           <p class="help">
