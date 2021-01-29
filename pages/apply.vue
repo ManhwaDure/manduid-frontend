@@ -1,5 +1,6 @@
 <template>
   <div>
+    <notifications :notifications="notifications"> </notifications>
     <p v-if="isApplicated">
       <template v-if="applicationForm.reApplication">재</template>입부신청이
       성공적으로 접수됐습니다. 만약 2~3일 이후에도 연락이 오지 않는다면
@@ -145,9 +146,10 @@ import gql from 'graphql-tag'
 import Vue from 'vue'
 import TelInput from '~/components/telInput.vue'
 import LoadingModal from '~/components/loadingModal.vue'
+import Notifications from '~/components/notifications.vue'
 
 export default Vue.extend({
-  components: { TelInput, LoadingModal },
+  components: { TelInput, LoadingModal, Notifications },
   layout: 'default-wide',
   data() {
     return {
@@ -164,6 +166,7 @@ export default Vue.extend({
       },
       isAdditionalQuestionsStep: false,
       additionalQuestions: [],
+      notifications: [] as any[],
     }
   },
   created() {
@@ -225,8 +228,22 @@ export default Vue.extend({
             }
           }),
         },
+        errorPolicy: 'all',
       })
 
+      if (result.errors && result.errors.length > 0) {
+        this.notifications = this.notifications.concat(
+          result.errors.map((i) => {
+            return {
+              type: 'danger',
+              message: i.message,
+              until: Date.now() + 3000,
+            }
+          })
+        )
+        this.isAdditionalQuestionsStep = false
+        return
+      }
       this.isApplicated = true
       const { reApplication } = result.data.apply
       this.applicationForm.reApplication = reApplication
