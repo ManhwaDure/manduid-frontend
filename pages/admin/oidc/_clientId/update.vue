@@ -49,21 +49,22 @@
       <div class="field">
         <label for="redirectUris" class="label">Redirect uri들</label>
         <div class="control">
-          <textarea
+          <array-input
             id="redirectUris"
-            v-model="redirectUrisInput"
+            v-model="client.redirectUris"
+            type="textarea"
             required
             class="textarea"
-          ></textarea>
+          />
         </div>
         <p class="help">개행문자로 구분합니다.</p>
       </div>
       <div class="field">
         <label for="allowedScopes" class="label">허용된 scope들</label>
         <div class="control">
-          <input
+          <array-input
             id="allowedScopes"
-            v-model="allowedScopesInput"
+            v-model="client.allowedScopes"
             required
             type="text"
             class="input"
@@ -76,9 +77,10 @@
           >Post logout redirect uris</label
         >
         <div class="control">
-          <textarea
+          <array-input
             id="postLogoutRedirectUris"
-            v-model="postLogoutRedirectUrisInput"
+            v-model="client.postLogoutRedirectUris"
+            type="textarea"
             class="textarea"
           />
         </div>
@@ -100,6 +102,27 @@
           />
         </div>
       </div>
+      <div class="field">
+        <label for="defaultAddedScopes" class="label">자동추가 Scope</label>
+        <div class="control">
+          <array-input
+            id="defaultAddedScopes"
+            v-model="client.defaultAddedScopes"
+            type="text"
+            class="input"
+            placeholder="요청하지 않아도 자동으로 추가되는 scope"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label for="returnPermissionsAsObject" class="checkbox">
+          <input
+            id="returnPermissionsAsObject"
+            v-model="client.returnPermissionsAsObject"
+            type="checkbox"
+          />&nbsp;permissions claim을 배열이 아닌 객체 형태로 반환
+        </label>
+      </div>
       <div class="field is-grouped">
         <div class="control">
           <button class="button is-primary" type="submit">수정</button>
@@ -117,10 +140,12 @@ import gql from 'graphql-tag'
 import Vue from 'vue'
 import hasPermission from '~/middleware/hasPermission'
 import FadeTransition from '~/components/fadeTransition.vue'
+import ArrayInput from '~/components/arrayInput.vue'
+
 export default Vue.extend({
   layout: 'admin',
   middleware: hasPermission('oidc.update'),
-  components: { FadeTransition },
+  components: { FadeTransition, ArrayInput },
   data() {
     return {
       client: {
@@ -131,6 +156,8 @@ export default Vue.extend({
         redirectUris: [] as string[],
         postLogoutRedirectUris: [] as string[],
         backchannelLogoutUri: '',
+        returnPermissionsAsObject: false,
+        defaultAddedScopes: [] as string[],
       },
       success: false,
     }
@@ -147,6 +174,8 @@ export default Vue.extend({
             redirectUris
             postLogoutRedirectUris
             backchannelLogoutUri
+            returnPermissionsAsObject
+            defaultAddedScopes
           }
         }
       `,
@@ -159,37 +188,8 @@ export default Vue.extend({
       update: (data) => data.getOAuth2ClientById,
     },
   },
-  computed: {
-    allowedScopesInput: {
-      get(): string {
-        return this.client.allowedScopes.join(' ')
-      },
-      set(value: string) {
-        this.client.allowedScopes = value.split(' ')
-      },
-    },
-    redirectUrisInput: {
-      get(): string {
-        return this.client.redirectUris.join('\n')
-      },
-      set(value: string) {
-        this.client.redirectUris = value.split('\n')
-      },
-    },
-    postLogoutRedirectUrisInput: {
-      get(): string {
-        return this.client.postLogoutRedirectUris.join('\n')
-      },
-      set(value: string) {
-        this.client.postLogoutRedirectUris = value.split('\n')
-      },
-    },
-  },
   methods: {
     async updateClient() {
-      this.redirectUrisInput = this.redirectUrisInput.trim()
-      this.allowedScopesInput = this.allowedScopesInput.trim()
-
       await this.$apollo.mutate({
         mutation: gql`
           mutation(
@@ -199,6 +199,8 @@ export default Vue.extend({
             $allowedScopes: [String!]!
             $postLogoutRedirectUris: [String!]
             $backchannelLogoutUri: String
+            $returnPermissionsAsObject: Boolean!
+            $defaultAddedScopes: [String!]!
           ) {
             updateOAuth2Client(
               id: $id
@@ -207,6 +209,8 @@ export default Vue.extend({
               allowedScopes: $allowedScopes
               postLogoutRedirectUris: $postLogoutRedirectUris
               backchannelLogoutUri: $backchannelLogoutUri
+              returnPermissionsAsObject: $returnPermissionsAsObject
+              defaultAddedScopes: $defaultAddedScopes
             ) {
               id
             }
@@ -219,6 +223,8 @@ export default Vue.extend({
           allowedScopes: this.client.allowedScopes,
           postLogoutRedirectUris: this.client.postLogoutRedirectUris,
           backchannelLogoutUri: this.client.backchannelLogoutUri,
+          returnPermissionsAsObject: this.client.returnPermissionsAsObject,
+          defaultAddedScopes: this.client.defaultAddedScopes,
         },
       })
 
