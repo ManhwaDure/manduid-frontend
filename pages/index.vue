@@ -4,6 +4,9 @@
     외부고리<br />
     <ul>
       <li><a href="https://wiki.caumd.club">위키</a></li>
+      <li v-if="me.isExecutive || me.isPresident">
+        <a href="https://caumd.club/edit">동아리 소개 웹사이트 관리</a>
+      </li>
     </ul>
     관리<br />
     <ul>
