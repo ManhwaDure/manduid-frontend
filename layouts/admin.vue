@@ -81,7 +81,7 @@
                 <template v-for="item in menu.items">
                   <nuxt-link
                     :key="menu.name + '_' + item.name"
-                    :to="menu.href || ''"
+                    :to="item.href || ''"
                     class="navbar-item"
                     >{{ item.name }}</nuxt-link
                   >
