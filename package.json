@@ -24,7 +24,7 @@
     "graphql-tag": "^2.11.0",
     "nuxt": "^2.14.6",
     "nuxt-typed-vuex": "^0.1.22",
-    "xlsx": "^0.16.9"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.6",
