@@ -66,7 +66,7 @@
     </p>
     <hr />
     <h2 class="subtitle">회원이지만 아이디가 없으신가요?</h2>
-    <p><nuxt-link to="/register">여기</nuxt-link>서 아이디를 만들어주세요!</p>
+    <p><nuxt-link to="/signup">여기</nuxt-link>서 아이디를 만들어주세요!</p>
   </div>
 </template>
 
