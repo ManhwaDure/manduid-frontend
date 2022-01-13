@@ -2,7 +2,7 @@
   <div>
     <notifications :notifications="notifications"> </notifications>
     <p v-if="isApplicated">
-      <template v-if="applicationForm.reApplication">재</template>입부신청이
+      <template v-if="applicationForm.reApplication">재</template>가입신청이
       성공적으로 접수됐습니다. 만약 2~3일 이후에도 연락이 오지 않는다면
       회장단에게 문자나 전화로 연락해주세요.<br />
     </p>
@@ -40,7 +40,7 @@
     <form v-else @submit.prevent="doApplyOrContinue">
       <p>
         중앙대학교 서울캠퍼스 중앙동아리 만화두레에 오신 것을 환영합니다!<br />
-        온라인 입부신청 중 오류 발생시 회장단에게 연락해주시기 바랍니다.
+        온라인 가입신청 중 오류 발생시 회장단에게 연락해주시기 바랍니다.
       </p>
       <div class="field">
         <label for="name" class="label">이름</label>
@@ -170,7 +170,7 @@ export default Vue.extend({
     }
   },
   created() {
-    this.$store.commit('SET_RIGHT_CARD_LAYOUT_TITLE', '입부신청')
+    this.$store.commit('SET_RIGHT_CARD_LAYOUT_TITLE', '가입신청')
   },
   apollo: {
     additionalQuestions: {

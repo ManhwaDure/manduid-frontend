@@ -62,7 +62,7 @@
     <h2 class="subtitle">만화두레에 처음이신가요?</h2>
     <p>
       만화두레에 처음이시라면
-      <nuxt-link to="/apply">여기</nuxt-link>서 입부해주세요!
+      <nuxt-link to="/apply">여기</nuxt-link>서 가입해주세요!
     </p>
     <hr />
     <h2 class="subtitle">회원이지만 아이디가 없으신가요?</h2>

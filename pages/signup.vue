@@ -18,9 +18,9 @@
       @submit.prevent="checkMembership"
     >
       <p>
-        동아리 회원만 사이트에 회원가입할 수 있습니다. <br />
+        동아리 회원만 아이디를 생성할 수 있습니다. <br />
         만약 동아리 회원이 아니시라면 <nuxt-link to="/apply">여기</nuxt-link>서
-        입부신청해주세요. <br />
+        가입신청해주세요. <br />
         회원임에도 오류가 발생한다면 회장단에게 문의해주시기 바랍니다.
       </p>
       <div class="field">
