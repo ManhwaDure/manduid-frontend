@@ -89,6 +89,17 @@
         </div>
       </div>
       <div class="field">
+        <label for="memo" class="label">비고 및 특이사항</label>
+        <div class="control">
+          <textarea
+            id="memo"
+            v-model="data.memo"
+            type="text"
+            class="textarea"
+          />
+        </div>
+      </div>
+      <div class="field">
         <div class="control">
           <button class="button is-primary">수정</button>
         </div>
@@ -163,6 +174,7 @@ type VueDataType = {
     studentId: number
     phoneNumber: string
     birthday: string
+    memo: string
   }
 }
 
@@ -184,6 +196,7 @@ export default Vue.extend({
         studentId: 0,
         phoneNumber: '',
         birthday: '',
+        memo: '',
       },
     }
   },
@@ -199,6 +212,7 @@ export default Vue.extend({
             studentId
             phoneNumber
             birthday
+            memo
           }
         }
       `,
@@ -226,6 +240,7 @@ export default Vue.extend({
         studentId,
         phoneNumber,
         birthday,
+        memo,
       } = this.data
       const result = await this.$apollo.mutate({
         mutation: gql`
@@ -248,6 +263,7 @@ export default Vue.extend({
             department,
             studentId,
             phoneNumber,
+            memo,
             birthday,
           },
           reason: this.reason || '',

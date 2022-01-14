@@ -41,7 +41,7 @@ export default Vue.extend({
   data() {
     return {
       email: '',
-      success: null as null | boolean,
+      notifications: [] as any[],
       isSending: false,
     }
   },
@@ -63,10 +63,9 @@ export default Vue.extend({
       })
       this.isSending = false
 
-      this.success = result.data.forgotPassword as boolean
-      setTimeout(() => {
-        this.success = null
-      }, 3000)
+      if (result.data?.forgotPassword) {
+        this.notifications.push({})
+      }
     },
   },
 })

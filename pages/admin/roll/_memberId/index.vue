@@ -61,6 +61,10 @@
           <th>생일</th>
           <td>{{ memberCurrentRecord.birthday }}</td>
         </tr>
+        <tr>
+          <th>비고 밑 특이사항</th>
+          <td>{{ memberCurrentRecord.memo }}</td>
+        </tr>
       </tbody>
       <thead>
         <tr>
@@ -191,6 +195,7 @@ export default Vue.extend({
         schoolRegisterationStatus: '',
         name: '',
         department: '',
+        memo: '',
         studentId: 0,
         phoneNumber: '',
         birthday: '',
@@ -243,6 +248,7 @@ export default Vue.extend({
             isExecutive
             isPresident
             executiveTypeName
+            memo
             previousRecords {
               memberType
               schoolRegisterationStatus
@@ -259,6 +265,7 @@ export default Vue.extend({
               birthday
               isExecutive
               isPresident
+              memo
             }
             creator {
               id

@@ -1,16 +1,6 @@
 <template>
   <form action="POST" @submit.prevent="doChangePassword">
-    <fade-transition>
-      <div v-if="newPasswordsNotEqual" class="notification is-warning">
-        새로운 비밀번호가 서로 동일하지 않습니다.
-      </div>
-      <div v-else-if="passwordChanged" class="notification is-success">
-        비밀번호가 변경됐습니다.
-      </div>
-      <div v-else-if="passwordNotChanged" class="notification is-danger">
-        비밀번호 변경에 실패했습니다.
-      </div>
-    </fade-transition>
+    <notifications :notifications="notifications" />
     <div class="field">
       <label for="password" class="label">현재 비밀번호</label>
       <div class="control">
@@ -64,19 +54,17 @@
 <script lang="ts">
 import gql from 'graphql-tag'
 import Vue from 'vue'
-import fadeTransition from '~/components/fadeTransition.vue'
+import Notifications from '~/components/notifications.vue'
 
 export default Vue.extend({
-  components: { fadeTransition },
+  components: { Notifications },
   middleware: 'isAuthenticated',
   data() {
     return {
       oldPassword: '',
       newPassword: '',
       newPasswordRetype: '',
-      newPasswordsNotEqual: false,
-      passwordChanged: false,
-      passwordNotChanged: false,
+      notifications: [] as any[],
     }
   },
   created() {
@@ -84,12 +72,12 @@ export default Vue.extend({
   },
   methods: {
     async doChangePassword() {
-      this.newPasswordsNotEqual = false
-      this.passwordChanged = false
-      this.passwordNotChanged = false
       if (this.newPassword !== this.newPasswordRetype) {
-        this.newPasswordsNotEqual = true
-        return
+        return this.notifications.push({
+          type: 'warning',
+          message: '새로운 비밀번호가 서로 일치하지 않습니다.',
+          until: Date.now() + 3000,
+        })
       }
       const result = await this.$apollo.mutate({
         mutation: gql`
@@ -101,15 +89,34 @@ export default Vue.extend({
           oldPassword: this.oldPassword,
           newPassword: this.newPassword,
         },
+        errorPolicy: 'all',
       })
 
-      if (result.data.changePassword) {
-        this.passwordChanged = true
+      if (result.data?.changePassword) {
+        this.notifications.push({
+          type: 'success',
+          message: '비밀번호 변경에 성공했습니다.',
+          until: Date.now() + 3000,
+        })
         this.oldPassword = ''
         this.newPassword = ''
         this.newPasswordRetype = ''
+      } else if (result.errors && result.errors.length > 0) {
+        this.notifications.push(
+          result.errors.map((i) => {
+            return {
+              type: 'danger',
+              message: '오류가 발생했습니다: ' + i.message,
+              until: Date.now() + 3000,
+            }
+          })
+        )
       } else {
-        this.passwordNotChanged = true
+        this.notifications.push({
+          type: 'danger',
+          message: '비밀번호 변경에 실패했습니다.',
+          until: Date.now() + 3000,
+        })
       }
     },
   },

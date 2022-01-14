@@ -87,6 +87,12 @@
         </div>
       </div>
       <div class="field">
+        <label for="memo" class="label">비고 및 특이사항</label>
+        <div class="control">
+          <textarea id="memo" v-model="memo" type="text" class="textarea" />
+        </div>
+      </div>
+      <div class="field">
         <div class="control">
           <button class="button is-primary">추가</button>
         </div>
@@ -123,6 +129,7 @@ export default Vue.extend({
       phoneNumber: '',
       birthday: '',
       createdMemberId: null as null | string,
+      memo: '',
     }
   },
   methods: {
@@ -144,6 +151,7 @@ export default Vue.extend({
             studentId: this.studentId,
             phoneNumber: this.phoneNumber,
             birthday: this.birthday,
+            memo: this.memo,
           },
         },
       })
