@@ -63,7 +63,7 @@
         </tr>
         <tr>
           <th>비고 밑 특이사항</th>
-          <td>{{ memberCurrentRecord.memo }}</td>
+          <td style="white-space: pre-wrap">{{ memberCurrentRecord.memo }}</td>
         </tr>
       </tbody>
       <thead>
