@@ -1,6 +1,6 @@
 export type SchoolRegisterationStatus =
   | 'Enrolled'
-  | 'LeaveOfAbesnce'
+  | 'LeaveOfAbsence'
   | 'MilitaryLeaveOfAbsence'
   | 'Graduated'
   | 'Expelled'
@@ -17,7 +17,7 @@ export const SchoolRegisterationStatusDescription: {
   Enrolled: '재학',
   Expelled: '제적',
   Graduated: '졸업',
-  LeaveOfAbesnce: '휴학',
+  LeaveOfAbsence: '휴학',
   MilitaryLeaveOfAbsence: '군휴학',
 }
 
