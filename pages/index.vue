@@ -25,8 +25,9 @@
     </ul>
   </div>
   <div v-else>
-    로그인이 되어 있지 않습니다. <nuxt-link to="/login">여기</nuxt-link>서
-    로그인해주세요.
+    로그인이 되어 있지 않습니다. 회원이시라면
+    <nuxt-link to="/login">여기</nuxt-link>서 로그인해주시고, 회원이 아니시라면
+    <nuxt-link to="/apply">여기</nuxt-link>서 가입해주세요.
   </div>
 </template>
 
