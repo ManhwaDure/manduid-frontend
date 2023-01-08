@@ -7,7 +7,7 @@
       <div class="container is-fluid">
         <div class="logo-container">
           <nuxt-link to="/admin" style="color: inherit">
-            <img src="~assets/logo.svg" alt="만화두레" title="만화두레" /><br />
+            <img src="~assets/logo.png" alt="만화두레" title="만화두레" /><br />
             만화두레 회원관리
           </nuxt-link>
         </div>
@@ -52,7 +52,7 @@
         <div class="navbar-brand">
           <nuxt-link to="/admin" class="navbar-item">
             <img
-              src="~assets/logo.svg"
+              src="~assets/logo.png"
               alt="만화두레"
               style="height: 1.5em"
             />&nbsp;만화두레 회원관리

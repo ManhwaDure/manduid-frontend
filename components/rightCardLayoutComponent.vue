@@ -18,7 +18,7 @@
               <div class="level-item">
                 <nuxt-link to="/">
                   <img
-                    src="~/assets/logo.jpg"
+                    src="~/assets/logo.png"
                     alt="만화두레"
                     class="is-logo-img"
                   />
@@ -57,7 +57,7 @@ body,
   background-position: center;
 }
 .is-logo-img {
-  width: 32px;
+  width: 48px;
 }
 .with-top-padding {
   padding-top: 32px;
@@ -71,7 +71,7 @@ body,
 </style>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   props: {
