@@ -14,14 +14,21 @@
 <script lang="ts">
 import Vue from 'vue'
 import FadeTransition from './fadeTransition.vue'
+
+export interface NotificationItem {
+  until: Date
+  message: string
+  type: 'warning' | 'success' | 'danger'
+}
+
 export default Vue.extend({
   components: { FadeTransition },
   props: {
     notifications: {
       type: Array,
-      default: () => [] as Array<any>,
+      default: () => [] as Array<NotificationItem>,
       required: true,
-      validator(value: Array<any>) {
+      validator(value: Array<NotificationItem>) {
         for (const i of value) {
           if (
             !(i.until instanceof Date) ||
@@ -54,7 +61,9 @@ export default Vue.extend({
   },
   methods: {
     activeNotifications(): Array<any> {
-      return this.notifications.filter((i) => i.until > Date.now())
+      return this.notifications.filter(
+        (i) => (i as NotificationItem).until.getTime() > Date.now()
+      )
     },
   },
 })
