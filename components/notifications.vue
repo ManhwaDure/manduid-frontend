@@ -16,7 +16,7 @@ import Vue from 'vue'
 import FadeTransition from './fadeTransition.vue'
 
 export interface NotificationItem {
-  until: Date
+  until: Date | number
   message: string
   type: 'warning' | 'success' | 'danger'
 }
@@ -31,7 +31,7 @@ export default Vue.extend({
       validator(value: Array<NotificationItem>) {
         for (const i of value) {
           if (
-            !(i.until instanceof Date) ||
+            (!(i.until instanceof Date) && typeof i.until !== 'number') ||
             typeof i.message !== 'string' ||
             typeof i.type !== 'string'
           ) {
@@ -61,8 +61,11 @@ export default Vue.extend({
   },
   methods: {
     activeNotifications(): Array<any> {
-      return this.notifications.filter(
-        (i) => (i as NotificationItem).until.getTime() > Date.now()
+      return (this.notifications as NotificationItem[]).filter(
+        (i) =>
+          (typeof i.until === 'number'
+            ? i.until
+            : (i.until as Date).getTime()) > Date.now()
       )
     },
   },
