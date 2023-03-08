@@ -144,9 +144,9 @@
 <script lang="ts">
 import gql from 'graphql-tag'
 import Vue from 'vue'
-import TelInput from '~/components/telInput.vue'
 import LoadingModal from '~/components/loadingModal.vue'
 import Notifications from '~/components/notifications.vue'
+import TelInput from '~/components/telInput.vue'
 
 export default Vue.extend({
   components: { TelInput, LoadingModal, Notifications },
@@ -198,7 +198,16 @@ export default Vue.extend({
   },
   methods: {
     async doApplyOrContinue() {
-      if (this.additionalQuestions.length === 0) await this.doApply()
+      if (typeof this.studentId === 'number' && this.studentId < 10000) {
+        const todayYear = new Date().getFullYear()
+        this.notifications.push({
+          type: 'danger',
+          message: `입학년도(예시: ${todayYear}, ${
+            todayYear % 100
+          })가 아닌 학번(예시 : ${todayYear}1234)을 입력해주세요.`,
+          until: Date.now() + 3000,
+        })
+      } else if (this.additionalQuestions.length === 0) await this.doApply()
       else this.isAdditionalQuestionsStep = true
     },
     async doApply() {
