@@ -143,11 +143,13 @@ export default Vue.extend({
         `,
         variables: {
           begin:
-            this.peroid.begin === null
+            this.peroid.begin === null ||
+            new Date(this.peroid.begin) < new Date('1987-01-01T00:00+09:00')
               ? null
               : new Date(this.peroid.begin + '+09:00').toISOString(),
           end:
-            this.peroid.end === null
+            this.peroid.end === null ||
+            new Date(this.peroid.end) < new Date('1987-01-01T00:00+09:00')
               ? null
               : new Date(this.peroid.end + '+09:00').toISOString(),
         },
