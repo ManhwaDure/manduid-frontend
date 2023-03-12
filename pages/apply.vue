@@ -1,7 +1,8 @@
 <template>
   <div>
     <notifications :notifications="notifications"> </notifications>
-    <p v-if="isApplicated">
+    <p v-if="!accepting">현재 입부원서를 받고 있지 않습니다.</p>
+    <p v-else-if="isApplicated">
       <template v-if="applicationForm.reApplication">재</template>가입신청이
       성공적으로 접수됐습니다. 만약 2~3일 이후에도 연락이 오지 않는다면
       회장단에게 문자나 전화로 연락해주세요.<br />
@@ -167,12 +168,21 @@ export default Vue.extend({
       isAdditionalQuestionsStep: false,
       additionalQuestions: [],
       notifications: [] as any[],
+      accepting: true,
     }
   },
   created() {
     this.$store.commit('SET_RIGHT_CARD_LAYOUT_TITLE', '가입신청')
   },
   apollo: {
+    accepting: {
+      query: gql`
+        query {
+          applicationsAccepting
+        }
+      `,
+      update: (data) => data.applicationsAccepting,
+    },
     additionalQuestions: {
       query: gql`
         query {
