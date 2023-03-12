@@ -173,6 +173,11 @@ export default Vue.extend({
               name: '입부/재입부원서 추가질문 관리',
               href: '/admin/applications/questions',
             },
+            {
+              name: '입부원서 접수기간 설정',
+              href: '/admin/applications/peroid',
+            },
+            { name: '입부원서 접수잠금', href: '/admin/applications/lock' },
           ],
         },
         {
